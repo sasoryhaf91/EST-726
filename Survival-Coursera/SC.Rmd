@@ -1,0 +1,15 @@
+---
+title: "Survival Analysis"
+author: "Antonio, H. F."
+date: '2022-11-13'
+output: pdf_document
+---
+
+## Inicio
+
+Cargamos datos
+
+```{r}
+g <- read.csv(file = "Data\simulated HF mort data for GMPH (1K) final.csv", header=TRUE, sep=',')
+```
+
