@@ -1,8 +1,10 @@
 ---
 title: "Tarea 1"
 author: "Antonio, H. F."
-date: "2022-09-23"
-output: html_document
+date: '2022-09-23'
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ## Problema 1
@@ -82,27 +84,27 @@ S(t)=exp(-\lambda t^\alpha); \ \ \ \lambda>0,\alpha>0,t>0.
 
 Suponga que tenemos una muestra aleatoria, derive la función de verosimiltud para los siguentes casos:
 
-  a) Tenemos una m.a, de datos *truncados* por la izquierda $(y_{li},t_i)$, sujetos a $y_{li}≤ t_i; i = 1, 2, ..., n$ donde $y_{li}$ son tiempos de truncamiento por la izquierda.$(tip: L_i= P (T = t_i|T ≥ y_{li}))$
-  b) Tenemos una m.a, de datos censurados por intervalo $(Li, Ri); i = 1, ..., n.$ $(tip: Li = P (Li ≤ Ti ≤ Ri))$
-  c) Datos con truncamiento doble $(yli, ti, yri),$ sujetos a $yli≤ ti ≤ yri ; i = 1, 2, ..., n.$ $(tip: Li = P (T =ti|Li ≤ Ti ≤ Ri))$
-  d) (Caso censura por intervalo y truncamiento). Considere la un muestra de cuatro pacientes cuya edad al momento de su muerte estaba en los intervalos $(90, 120], (110, 15], (80, 100], (70, 75])$ sujeto a que la condición de entrada es de 90 años o mas. $(tip: Li = P (Li ≤ Ti ≤ Ri|T ≥ yli))$
+  a) Tenemos una m.a, de datos *truncados* por la izquierda $(y_{li},t_i)$, sujetos a $y_{li} \leq t_i; i = 1, 2, ..., n$ donde $y_{li}$ son tiempos de truncamiento por la izquierda.$(tip: L_i= P (T = t_i|T \geq y_{li}))$
+  b) Tenemos una m.a, de datos censurados por intervalo $(Li, Ri); i = 1, ..., n.$ $(tip: Li = P (Li \leq Ti \leq Ri))$
+  c) Datos con truncamiento doble $(yli, ti, yri),$ sujetos a $yli \leq ti \leq yri ; i = 1, 2, ..., n.$ $(tip: Li = P (T =ti|Li \leq Ti \leq Ri))$
+  d) (Caso censura por intervalo y truncamiento). Considere la un muestra de cuatro pacientes cuya edad al momento de su muerte estaba en los intervalos $(90, 120], (110, 15], (80, 100], (70, 75])$ sujeto a que la condición de entrada es de 90 años o mas. $(tip: Li = P (Li \leq Ti \leq Ri|T \geq yli))$
 
 ## Problema 7
 
-Sea $Y_1, Y_2, ..., Y_n$ variables aleatorias continuas e independientes de supervivencia y sea Y una nueva variable aleatoria de supervivencia, definida $W = min(Y_1, Y_2, ..., Y_n)$ Si $Y_i$ tiene función de supervivencia $SYi(y) =exp(−α_iyβ)$ para $αi > 0, y > 0$, determine la función de riesgo para $n^{1/β}W$.
+Sea $Y_1, Y_2, ..., Y_n$ variables aleatorias continuas e independientes de supervivencia y sea Y una nueva variable aleatoria de supervivencia, definida $W = min(Y_1, Y_2, ..., Y_n)$ Si $Y_i$ tiene función de supervivencia $SYi(y) =exp(-\alpha_i y \beta )$ para $\alpha_i > 0, y > 0$, determine la función de riesgo para $n^{1/ \beta }W$.
 
 
 ## Problema 8
 
-Los datos de benceno presentados en la Tabla anexa ilustran datos censurados por la izquierda tipo 1 con un solo nivel de censura de 2 ppb. Hay N = 36 observaciones, con c = 33 observaciones censuradas y n = 3 no censuradas. Los datos de tricloroetileno presentados en la Tabla tienen un nivel de censuraa de 5 ppb, con N = 24, c = 10, y n= 14. El conjunto de datos del río Skagit contiene 395 mediciones mensuales de concentraciones (mg/l)de amonio (NH3-N) realizadas de enero 1978 hasta diciembre 2010. La Tabla muestra las 60 observaciones realizadas de enero 1978 y diciembre 2010, ordenadas de la más pequeña hasta la más grande, para la cual todas las observaciones están censuradas en 0.01 mg/l. Observe que hay muestras con valores observados de 0.01 mg/l, los cuales serán tratados diferente de las 16 muestras  reportadas como <0.01 mg/l.
+Los datos de benceno presentados en la Tabla anexa ilustran datos censurados por la izquierda tipo 1 con un solo nivel de censura de 2 ppb. Hay N = 36 observaciones, con c = 33 observaciones censuradas y n = 3 no censuradas. Los datos de tricloroetileno presentados en la Tabla tienen un nivel de censuraa de 5 ppb, con N = 24, c = 10, y n= 14. El conjunto de datos del río Skagit contiene 395 mediciones mensuales de concentraciones (mg/l)de amonio (NH3-N) realizadas de enero 1978 hasta diciembre 2010. La Tabla muestra las 60 observaciones realizadas de enero 1978 y diciembre 2010, ordenadas de la más pequeña hasta la más grande, para la cual todas las observaciones están censuradas en 0.01 mg/l. Observe que hay muestras con valores observados de 0.01 mg/l, los cuales serán tratados diferente de las 16 muestras  reportadas como < 0.01 mg/l.
 
 \begin{center}
 \begin{tabular}{lllllllll}
 \hline
 \text{Concentración de NH3-N} (mg/l) & & & & & & & & \\
 \hline
-<0.01 & <0.01 & <0.01 & <0.01 & <0.01 & <0.01 & <0.01 & <0.01 & <0.01 \\
-<0.01 & <0.01 & <0.01 & <0.01 & <0.01 & <0.01 & <0.01 & 0.01 & 0.01 \\
+< 0.01 & < 0.01 & < 0.01 & < 0.01 & < .01 & < 0.01 & < 0.01 & < 0.01 & < 0.01 \\
+< 0.01 & < 0.01 & < 0.01 & < 0.01 & < 0.01 & < 0.01 & < 0.01 & 0.01 & 0.01 \\
 0.01&0.01&0.01&0.01&0.01&0.01&0.01&0.01&0.01 \\
 0.01&0.02&0.02&0.02&0.02&0.02&0.02&0.02&0.02 \\
 0.02&0.02&0.02&0.02&0.02&0.02&0.03&0.03&0.03 \\
