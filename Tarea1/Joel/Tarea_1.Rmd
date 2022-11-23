@@ -1,0 +1,464 @@
+---
+title: "Tarea 1"
+author: "José López Joel Patricio"
+date: ''
+output:
+  pdf_document:
+    toc: yes
+  html_document:
+    toc: yes
+    toc_float: yes
+---
+
+
+## Problema 1 
+
+Las propiedades de las funciones de riesgo: Supongamos que una variable aleatoria de supervivencia $T$ con una densidad una mezcla de dos exponenciales.
+
+$$f_{t}=p\lambda^{-\lambda t}+(1-p)\mu e^{-\mu t}; t \geq0$$
+
+donde $0<p<1$ es el parámetro de proporción de la mezcla $0<\lambda<\mu<1$ son parametros de cada exponencial en la mezcla.
+
+### a).
+
+Encuentre  la función de supervivencia $S(t)$
+
+La función de riesgo es:
+
+$$S(t)=\int_{t}^{\infty}p\lambda e^{-\lambda t}+(1-p)\mu e^{-\mu t}dt$$
+$$=p\lambda\int_{t}^{\infty}e^{-\lambda t}dt+(1-p)\mu\int_{t}^{\infty}e^{-\mu t}dt$$
+$$=-pe^{-\lambda t}|_{t}^{\infty}-(1-p)e^{-\mu t}|_{t}^{\infty}$$
+$$=pe^{t}+(1-p)e^{-\mu t}$$
+
+
+
+
+### b). 
+
+Encuentre la función de riesgo $h(t)$ para $T$ y explique anliticamente o intituvamente por que es decreciente en función de su argumento positivo $t$.
+
+
+$$\lim_{n \to \infty}=\lim_{n \to \infty}\frac{f_{T}(t)}{S(t)}=\lim_{n \to \infty}\left(\frac{p\lambda e^{-\lambda t}+(1-p)\mu e^{-\mu t}}{1-[p(1- e^{-\lambda t})+(1-p)(1-e^{-\mu t})]}\right)$$
+
+$$\lim_{n \to \infty}S(t)=0$$ por que el $\lim_{n \to \infty}e^{-t}=0
+
+
+## Problema 2
+
+Sea la variable aleatoria $T=e^y$ que representa el tiempo de supervivencia con distribución en la familia log-localidad-escala.
+
+$$P(Y\geq y)=S_{0}\left(\frac{y-\mu}{\sigma} \right)$$
+
+
+
+### a)
+
+Derive la función de densidad de probabilidades de $T$ bajo es supuesto que $S_{0}(\mu)=1-\Phi(\mu),$ donde $\Phi(\mu)$ es la funcion de distribución de una $N(0,1)$ 
+
+
+$$P(Y\geq y)=S_{0}\left(\frac{y-\mu}{\sigma} \right)$$
+
+
+$$p(Y\leq y)=1-S_{0}\left(\frac{y-\mu}{\sigma} \right)$$
+
+Ahora:
+
+$$p(Y\leq y)=1- \left(1-\Phi \left(\frac{y-\mu}{\sigma} \right)\right)$$
+$$=\Phi \left(\frac{y-\mu}{\sigma} \right)$$
+Tenemos que: T=e^{y} tiene una distribución localidad-escala. $\Phi\sim N(0,1)$
+
+$$F_{T}(t)=P \left ( U\leq \left(\frac{log(t)-\mu}{\sigma} \right)\right)$$
+
+$$=\Phi \left(\frac{log(t)-\mu}{\sigma} \right)$$
+
+$$f_{t}=\frac{d}{dt} \Phi \left(\frac{log(t)-\mu}{\sigma} \right)$$
+
+$$=\Phi\left(\frac{log(t)-\mu}{\sigma} \right)\left( \frac{1}{\sigma t}\right)$$
+
+$$\therefore~ T\sim lognormal(\mu,\sigma)$$
+
+
+### b).
+
+
+Derive la función de densidad de probabilidades de $T$ bajo el supuesto que $S_{0}(\mu)=-e^{\mu},$ use $\alpha=e^{\mu}$ y $\beta=\frac{1}{\sigma}$
+
+
+
+$$P(Y\geq y)=S_{0}\left(\frac{y-\mu}{\sigma} \right)$$
+
+
+
+$$P(Y\leq y)=1-S_{0}\left(\frac{y-\mu}{\sigma} \right)$$
+
+
+$$=1-exp\left({-e^{\left(\frac{log(t)-\mu}{\sigma} \right)}}\right)$$
+
+Derivando:
+
+
+$$=f_{Y}(y)=\frac{d}{dt}\left( 1-exp\left({-e^{\left(\frac{log(t)-\mu}{\sigma} \right)}}\right) \right)$$
+
+
+$$=\frac{1}{\sigma t}exp\left(\frac{log(t)-\mu}{\sigma} -e^{\left(\frac{log(t)-\mu}{\sigma} \right)}\right)$$
+
+$$\therefore~ T\sim Weibull(\alpha,\beta)$$
+
+
+## Problema 3
+
+Sea T una variable aleatoria de tiempo de vida, con una función de riesgo en forma de bañera, tiene una distribución exponencial de potencia con función de supervivencia.
+
+
+$$S(t)=e^{1-e^{(\lambda t)^{\alpha}}}$$
+### a).
+
+Si $\alpha=0.5$ demuestre que la función de riesgo tiene forma de bañera y encuentre el tiempo en que la tasa de riesgo cambia de decreciente a creciente.
+
+
+$$h(t)=\frac{\partial}{\partial t}logS(t)$$
+
+$$h(t)=\frac{\partial}{\partial t}1-e^{(\lambda t)^{2}}$$
+
+$$=\frac{e^{(\lambda t)^{1/2}}\lambda^{2}}{2t^{1/2}}$$
+
+Muestramos la grafica:
+
+
+```{r}
+
+lamb<-0.33
+alfa<-0.5
+
+d<-function(t)
+  exp(1-exp((lamb*t)^alfa))
+
+
+s<-function(t)
+  d(t)/(1-integrate(d,0,t)$value)
+
+x<-seq(0,1,length.out=100);
+y<-apply(matrix(x),1,s)
+plot(x,y,t="l")
+
+
+```
+
+```{r}
+# PUNTO CRITICO
+
+x[order(y)[1]]
+```
+
+
+### b).
+
+Si $alpha=2,$ demuestre que la tasa de riesgo de T es monótina y creciente.
+
+
+*De forma análitica:*
+
+
+$$h(t)=\frac{\partial}{\partial t}logS(t)$$
+
+
+$$h(t)=\frac{\partial}{\partial t}1-1-e^{(\lambda t)^{2}}$$
+$$=2\lambda^2te^{(\lambda t)^{2}}$$
+
+```{r}
+
+lamb<-0.33
+alfa<-2
+
+d<-function(t)
+  exp(1-exp((lamb*t)^alfa))
+
+
+s<-function(t)
+  d(t)/(1-integrate(d,0,t)$value)
+
+x<-seq(0,1,length.out=100);
+y<-apply(matrix(x),1,s)
+plot(x,y,t="l")
+
+# PUNTO CRITICO
+
+x[order(y)[1]]
+
+```
+
+## Problema 4
+
+Un modelo utilizando en la construcción de tablas de vida es de tasa de riesgo constante por partes. Aquí el eje de tiempo se divide en $k$ intervalos, $[\tau_{i-1},\tau_{i}),$ $i=1,...,k$ con $\tau_0=0$ y $\tau_{k}=\infty.$ La tasa de riesgo en el i-ésimo  intervalo es un avalor constante, $\theta_i$ eso es:
+
+
+
+
+$$h(t)=\left\lbrace\begin{array}{c} \theta_1 ~ ~ 0\leq t<\tau_{1}\\ \theta_2 ~ ~ \tau_1\leq t<\tau_{2}\\.\\.\\.\\\theta_{k-1} ~ ~ \tau_{k-2}\leq t<\tau_{k-1}\\ \theta_k ~ ~ \tau_{k-1}\leq t  \end{array}\right.$$
+
+### a)
+
+Obtenga la función de supervivencia.
+
+
+La función de supervicencia 
+
+$$S(t)=e^{-H(t)}\\donde:\\H(t)=\int_{0}^{t}h(u)du$$
+
+Realizando los calculos tenemos:
+
+*Función de riesgo acumulado*
+
+
+$$H(t)=\left\lbrace\begin{array}{c} \theta_{1}t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~ ~~~~~~~ ~ ~~~~~~~ ~ ~ 0\leq t<\tau_{1}\\ \theta_{i}\tau_{1}+\theta_2(t-\tau_1) ~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~ \tau_1\leq t<\tau_{2}\\.\\.\\.\\\theta_{1}\tau_{1}+...+\theta_{k-2}\tau_{k-2}+\theta_{k-1}(t-\tau_{k-2})~~~~~~~~~~~~~~~~~~ ~ ~ \tau_{k-2}\leq t<\tau_{k-1}\\ \theta_{1}\tau_{1}+...+\theta_{k-1}\tau_{k-1}+\theta_{k}(t-\tau_{k-1}) ~ ~~~~~~~~~~~~~~~~~~~~~~ \tau_{k-1}\leq t  \end{array}\right.$$
+
+
+
+*La funcion de supervicencia es:*
+
+
+$$S(t)=\left\lbrace\begin{array}{c} e^{-\theta_{1}t}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~ ~~~~~~~ ~ ~~~~~~~ ~ ~ 0\leq t<\tau_{1}\\ e^{-(\theta_1 \tau_1+\theta_2(t-\tau_1))} ~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~ \tau_1\leq t<\tau_{2}\\.\\.\\.\\ e^{-(\theta_1 \tau_{1}+...+\theta_{k-2}\tau_{k-2}+\theta_{k-1}(t-\tau_{k-2}))}~~~~~~~~~~~~~~~~~~ ~ ~ \tau_{k-2}\leq t<\tau_{k-1}\\ e^{-(\theta_1 \tau_{1}+...+\theta_{k-1}\tau_{k-1}+\theta_{k}(t-\tau_{k-1}))} ~ ~~~~~~~~~~~~~~~~~~~~~~ \tau_{k-1}\leq t  \end{array}\right.$$
+
+
+### b)
+
+Encuentre la función  de vida residual media.
+
+
+$$S(t)=\left\lbrace\begin{array}{c} \frac{1}{\theta_{1}}~~~~~~~~~~~~~ ~ ~~~~~~~ ~ ~~~~~~~ ~ ~ 0\leq t<\tau_{1}\\ \frac{1}{\theta_{2}} ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~ \tau_1\leq t<\tau_{2}\\.\\.\\.\\ \frac{1}{\theta_{k-1}}~~~~~~~~~~~~~~~~~~~~ ~ ~ \tau_{k-2}\leq t<\tau_{k-1}\\ \frac{1}{\theta_{k}} ~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \tau_{k-1}\leq t  \end{array}\right.$$
+
+## Problema 5
+
+En algunas aplicaciones, se incluye parametro, llamado tiempo de arantia. Este parámetro $\phi$ es el tiempo más pequeño en que podría ocurrir una falla. Considere que en la variable aleatoria tiempo de vda $T$ tiene una función de supervivencia $Weibull$ de tres parámetros de distrubución está dada por:
+
+
+$$S(t)=\left\lbrace\begin{array}{c} e^{-\lambda(t-\phi)^{\alpha}}~~~~~~~~~~
+~~~ si~ ~~~~~~~ ~ ~~~~~~~ ~ ~ t\geq \phi\\ 1~~~~~~~~~~~~~~~~~~~~~si~~~~~~~~~~~~~~~~~~~~~t<0  \end{array}\right.$$
+
+
+### a).
+
+Encuentre la función de riesgo y la función de densidad de la distribucion $Weibull$ de tres parámetros.
+
+
+
+
+$$h(t)=\frac{\partial}{\partial t}log(S(t))$$
+Aplicamos las derivadas parciales tenemos:
+
+
+$$h(t)=\left\lbrace\begin{array}{c} \frac{\partial}{\partial t}log\left(e^{-\lambda(t-\phi)^{\alpha}}\right)~~~~~~~~~~~~~ si~ ~~~~~~~ ~ ~~~~~~~ ~ ~ t\geq \phi\\ \frac{\partial}{\partial t}log(1)~~~~~~~~~~~~~~~~~~~~~si~~~~~~~~~~~~~~~~~~~~~t<0  \end{array}\right.$$
+
+
+
+$$h(t)=\left\lbrace\begin{array}{c} \alpha\lambda(t-\phi)^{\alpha-1}~~~~~~~~~~~~~ si~ ~~~~~~~ ~ ~~~~~~~ ~ ~ t\geq \phi\\ 0~~~~~~~~~~~~~~~~~~~~~si~~~~~~~~~~~~~~~~~~~~~t<0  \end{array}\right.$$
+
+$$f(t)=h(t)S(t)$$
+
+Finalmente tenemos:
+
+$$f(t)=\alpha\lambda(t-\phi)^{\alpha-1}e^{-\lambda(t-\phi)^{\alpha}}$$
+
+### b).
+
+Suponga que el tiempo de supervivencia T sigue una distribución Weibull de tres parámetros con $\alpha = 1,$ $\lambda= 0.0075$ y $\phi = 100.$ Encuentra la media y la mediana de los tiempos de vida.
+
+
+Tenemos para la *media*
+
+
+
+
+$$f_{T}(t)=0.0075e^{0.0075(t-100)};~~~~~~100\leq t<\infty$$
+
+$$E(T)=\int_{100}^{\infty}t~ 0.0075e^{0.0075(t-100)}dt$$
+$$=0.0075e^{0.75}\int_{100}^{\infty}t~e^{0.0075t}dt$$
+*Media*
+
+$$S(m)=100-e^{-0.0075(m-100}$$
+Resolviendo en R tenemos:
+
+
+```{r}
+
+alfa<-1
+lamda<-0.0075
+fi=100
+condicion<-expression(exp(-lamda*(t-fi)^alfa))
+
+f<-function(t)
+  if(t>=fi)-1*eval(deriv(condicion,'t')) else 0
+
+h<-function(t)
+  func(t)/eval(condicion)
+
+
+```
+
+
+
+
+```{r}
+
+x<-matrix(seq(100,500,length.out=100))
+y<-apply(x,1,f)
+plot(x,y,t='l')
+
+# media
+
+media<-(t(x)%*%y)/sum(y)
+media
+
+
+# mediana
+
+Z<-y/sum(y)
+J<-1
+M<-Z[J]
+while (M<.5) {
+  J<-J+1
+  M<-M+Z[J]
+}
+
+Mediana<-x[J]
+Mediana
+```
+
+### Problema 6
+
+Sea $T$ una variable aleatoria de tiempo de vida con distribución $weibull$ de dos parametros, con función de
+supervivencia
+
+
+$$S(t)=e^{-\lambda t^\alpha}$$
+
+Suponga que tenemos una muestra aleatoria, derive la función de verosimiltud para los siguentes casos:
+
+### a).
+
+Tenemos una m.a, de datos *truncados* por la izquierda $(y_{li},t_i)$, sujetos a $y_{li}≤ t_i; i = 1, 2, ..., n$ donde $y_{li}$ son tiempos de truncamiento por la izquierda.$(tip: L_i= P (T = t_i|T ≥ y_{li}))$
+
+
+$$L(\alpha,\beta;t)=\prod_{1}^{n}P(T=t_i|t\geq y_{li})$$
+
+$$=\prod_{1}^{n}\frac{f(t_i)}{P(T\geq y_{li})}$$
+
+$$=\prod_{1}^{n}\frac{\alpha\lambda t^{\alpha-1}e^{-\lambda}t^{\alpha}_{i}}{e^{-\lambda y_{li}^{\alpha}}}$$
+
+
+
+### b).
+
+Tenemos una m.a, de datos censurados por intervalo $(Li, Ri); i = 1, ..., n.$ $(tip: Li = P (Li ≤ Ti ≤ Ri))$
+
+
+$$L(\alpha,\beta;t)=\prod_{i}^{n}P(l_{li}\leq T \geq r_{i})$$
+
+$$=\prod_{i}^{n}(F(r_i)-F(l_i))=\prod_{i}^{n}\left(-e^{-\lambda r^{\alpha}_{i}}+e^{-\lambda l_{i}^{\alpha}} \right)$$
+
+$$=\prod_{i}^{n}\left(e^{-\lambda l_{i}^{\alpha}}-e^{-\lambda r_{i}^{\alpha}} \right)$$
+
+
+### c)
+
+Datos con truncamiento doble $(yli, ti, yri),$ sujetos a $yli≤ ti ≤ yri ; i = 1, 2, ..., n.$ $(tip: Li = P (T =ti|Li ≤ Ti ≤ Ri))$
+
+Truncamiento doble:
+
+$$f(y|a<y<b)=\frac{f(y)}{P(a<Y<b)}$$
+
+$$L(\lambda,\alpha;t)=\prod_{1}^{n}P(T=t|y_{li}<T<yr_i$$
+
+$$=\prod_{1}^{n}\frac{f(t)}{P(y_{li}<T<y_{ri})}$$
+
+$$=\prod_{1}^{n}\frac{f(t_i)}{P(y_{li}<T\geq y_{ri})}$$
+
+$$=\prod_{1}^{n}\frac{f(t_i)}{F(y_{ri})-F( y_{li})}$$
+
+$$=\prod_{1}^{n}\frac{\lambda \alpha(\lambda t)^{\alpha-1}e^{-(\lambda t_{i})^\alpha}}{e^{-(\lambda yt_{i})^{\alpha}}+e^{-(\lambda y_{ri})^{\alpha}}}$$
+
+
+$$=(\lambda \alpha)^{n} \prod_{1}^{n}\frac{(t)^{\alpha-1}e^{-(\lambda t_{i})^\alpha}}{e^{-(\lambda yt_{i})^{\alpha}}+e^{-(\lambda y_{ri})^{\alpha}}}$$
+
+
+### d).
+
+caso censura por intervalo y truncamiento).Considere la un muestra de cuatro pacientes cuya edad al moneto de su muerte estaba en lso intervalos $(90, 120], (110, 15], (80, 100], (70, 75])$ sujeto a que la condición de entrada es de 90 años o mas. $(tip: Li = P (Li ≤ Ti ≤ Ri|T ≥ yli))$
+
+
+La verosimilitud se expresa como:
+
+$$L(\lambda,\alpha;t)=\prod_{i=1}^{n}\frac{P(l_i<T<R_i)}{P(T>y_{li})}$$
+
+$$=\frac{P(90<T\leq120)}{P(T \geq90)}\frac{P(110<T\leq115)}{P(T \geq90)}\frac{P(80<T\leq100)}{P(T \geq90)}\frac{P(70<T\leq75)}{P(T \geq90)}$$
+$$=\frac{e^{-\lambda120^\alpha}+e^{-\lambda90^\alpha}}{e^{-\lambda90^\alpha}}\frac{e^{-\lambda115^\alpha}+e^{-\lambda110^\alpha}}{e^{-\lambda90^\alpha}}\frac{e^{-\lambda100^\alpha}+e^{-\lambda80^\alpha}}{e^{-\lambda90^\alpha}}\frac{e^{-\lambda75^\alpha}+e^{-\lambda70^\alpha}}{e^{-\lambda90^\alpha}}$$
+
+
+$$=\left(\frac{1}{e^{-\lambda90^\alpha}}\right)^4(e^{-\lambda120\alpha}+e^{-\lambda90\alpha})(e^{-\lambda115\alpha}+e^{-\lambda110\alpha})(e^{-\lambda100\alpha}+e^{-\lambda80\alpha})(e^{-\lambda75\alpha}+e^{-\lambda70\alpha})$$
+
+## Problema 7
+
+
+Sea $Y_1, Y_2, ..., Y_n$ variables aleatorias continuas e independientes de supervivencia y sea Y una nueva variable
+aleatoria de supervivencia, definida $W = min(Y_1, Y_2, ..., Y_n)$ Si $Y_i$ tiene función de supervivencia $SYi(y) =exp(−α_iyβ)$ para $αi > 0, y > 0,$ determine la función de riesgo para $n^{1/β}W.$
+
+
+Distribuciión $Weibull $
+
+$$W\sim Weibull \left(\sum_{i=1}^{n}\alpha_i,\beta\right)$$
+
+Sea
+
+$$Y=n^{\frac{1}{\beta}}W$$
+
+$$F_{Y}(y)=P(Y<y)=P(n^{\frac{1}{\beta}}W<y)=P(W<y/n^{\frac{1}{\beta}})$$
+
+
+$$=1-e^{-\sum_{i=1}^{n}\alpha_{i}(y/n^{\frac{1}{\beta}})^\beta}$$
+
+$$=1-e^{-\frac{n}{n}\alpha y^{\beta}}$$
+$$1-e^{-\alpha y^{\beta}}$$
+Entonces:
+
+$$W \sim Weibull(\alpha,\beta)$$
+
+
+## Problema 8
+
+Considere los datos los datos del problema 8
+
+Suponga las concentraciones se distribuyen lognormales $(µ,σ)$ construya la verosimilitud y obtenga los estimadores
+de m´axima verosimilitud, asi como sus varianzas estimadas.
+
+
+Función de verosimilitud
+
+
+$$L(\mu,\sigma^2;t)=\prod_{i=1}^{n}f(\mu_i,\mu,\sigma^2)^{\delta_{i}}F(\mu_i,\mu,\sigma^2)^{1-\delta_{i}}$$
+
+```{r}
+
+delta <-rep(.01,16)
+datos  <-c(rep(.01,12),rep(.02,14),rep(.03,7),rep(.04,6),rep(.05,3),rep(.06,.47))
+
+
+likehood<-function(theta)
+{
+  mu<-theta[1]; sigma<-theta[2]
+-(sum(plnorm(delta,mu,sigma,log.p =TRUE))+
+sum(dlnorm(datos,mu,sigma,log =TRUE)))
+
+}
+#Estimados 
+
+
+res<-optim(c(0,1),likehood,hessian =TRUE)
+
+cbind(res$par,diag(solve(res$hessian))^.5)
+
+
+```
+
+
+
+
