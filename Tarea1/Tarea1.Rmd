@@ -12,7 +12,6 @@ output:
 Propiedades de las funciones de riesgo. Supongamos que una variable aleatoria de supervivencia T con densidad una mezcla de dos exponenciales
 
 \begin{equation}
-\tag{1}
 f_T(t)=p \lambda e^{-\lambda t} + (1-p) \mu e^{-\mu t}; \ \ \ t \geq 0
 \end{equation}
 
@@ -20,19 +19,73 @@ donde $0<p<1$ es el parámetro de proporción de la mezcla $0<\lambda<\mu<1$ son
 
   a) Encuentre  la función de supervivencia $S(t)$.
   b) Encuentre la función de riesgo $h(t)$ para $T$ y explique analíticamente o intuitivamente por qué es decreciente en función de su argumento positivo $t$.
-  
+
+### Solución a)
+
+Recordando que $S(t)=P(T>t)$, y que $P(T>t)=1-P(T>t)$, además $P(T<t)=F_T(t)$, y finalmete sabemos que $F_T(t)=\int_0^tf_T(t)dt$, entonces,
+
+$$
+S(t)=1 -  \int_0^t p \lambda e^{-\lambda s} + (1-p) \mu e^{-\mu s} ds \\
+$$
+
+\begin{equation}
+S(t)=1-[p(1-e^{-\lambda t})+(1-p) e^{-\mu t}]
+\end{equation}
+
+### Solución b)
+
+Recordando que $h(t)=\frac{f_T(t)}{S(t)}$, tenemos que,
+
+\begin{equation}
+h(t)= \frac{p \lambda e^{-\lambda t} + (1-p) \mu e^{-\mu t}}{1-[p(1-e^{-\lambda t})+(1-p) e^{-\mu t}]}
+\end{equation}
+
+Graficando la función de riesgo observamos que es decreciente en todo su dominio.
+
+![](Imag/E1-Fr.png)
+
 ## Problema 2
 
 Sea la variable aleatoria $T=e^y$ que representa el tiempo de supervivencia con distribución en la familia log-localidad-escala
 
 \begin{equation}
-\tag{2}
 P(Y\geq y)=S_{0}\left(\frac{y-\mu}{\sigma} \right)
 \end{equation}
 
   a) Derive la función de densidad de probabilidades de $T$ bajo es supuesto que $S_{0}(\mu)=1-\Phi(\mu),$ donde $\Phi(\mu)$ es la función de distribución de una $N(0,1)$.
   b) Derive la función de densidad de probabilidades de $T$ bajo el supuesto que $S_{0}(\mu)=-e^{\mu},$ use $\alpha=e^{\mu}$ y $\beta=\frac{1}{\sigma}$.
 
+### Solución a)
+
+De **(4)** tenemos que,
+
+$$P(Y\leq y)=1- \left(1-\Phi \left(\frac{y-\mu}{\sigma} \right)\right)$$
+
+Y sabemos que si $y=log(t)$,
+
+$$F_{T}(t)=P \left ( U\leq \left(\frac{log(t)-\mu}{\sigma} \right)\right)$$
+
+Por lo tanto,
+
+\begin{equation}
+f_T(t)=\left(\frac{log(t)-\mu}{\sigma} \right)\left( \frac{1}{\sigma t}\right)
+\end{equation}
+
+La cual es la f.d.p. de una $lN(\mu,\sigma)$.
+
+## Solución b)
+
+De **(4)** tenemos que,
+
+$$P(Y\geq y)=1-exp\left\{{-exp{\left(\frac{log(t)-\mu}{\sigma} \right)}}\right\}$$
+
+Por lo tanto,
+
+\begin{equation}
+f_T(t)=\frac{1}{\sigma t}exp\left\{\frac{log(t)-\mu}{\sigma} -e^{\left(\frac{log(t)-\mu}{\sigma} \right)}\right\}
+\end{equation}
+
+La cual es la f.d.p. de una $Weibull(\alpha,\beta)$.
 
 ## Problema 3
 

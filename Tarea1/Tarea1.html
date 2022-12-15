@@ -464,19 +464,20 @@ S(t)=exp(-\lambda t^\alpha); \ \ \ \lambda&gt;0,\alpha&gt;0,t&gt;0.
 <p>Suponga que tenemos una muestra aleatoria, derive la función de
 verosimiltud para los siguentes casos:</p>
 <ol style="list-style-type: lower-alpha">
-<li>Tenemos una m.a, de datos <em>truncados</em> por la izquierda <span class="math inline">\((y_{li},t_i)\)</span>, sujetos a <span class="math inline">\(y_{li}≤ t_i; i = 1, 2, ..., n\)</span> donde <span class="math inline">\(y_{li}\)</span> son tiempos de truncamiento por la
-izquierda.<span class="math inline">\((tip: L_i= P (T = t_i|T ≥
-y_{li}))\)</span></li>
-<li>Tenemos una m.a, de datos censurados por intervalo <span class="math inline">\((Li, Ri); i = 1, ..., n.\)</span> <span class="math inline">\((tip: Li = P (Li ≤ Ti ≤ Ri))\)</span></li>
+<li>Tenemos una m.a, de datos <em>truncados</em> por la izquierda <span class="math inline">\((y_{li},t_i)\)</span>, sujetos a <span class="math inline">\(y_{li} \leq t_i; i = 1, 2, ..., n\)</span> donde
+<span class="math inline">\(y_{li}\)</span> son tiempos de truncamiento
+por la izquierda.<span class="math inline">\((tip: L_i= P (T = t_i|T
+\geq y_{li}))\)</span></li>
+<li>Tenemos una m.a, de datos censurados por intervalo <span class="math inline">\((Li, Ri); i = 1, ..., n.\)</span> <span class="math inline">\((tip: Li = P (Li \leq Ti \leq Ri))\)</span></li>
 <li>Datos con truncamiento doble <span class="math inline">\((yli, ti,
-yri),\)</span> sujetos a <span class="math inline">\(yli≤ ti ≤ yri ; i =
-1, 2, ..., n.\)</span> <span class="math inline">\((tip: Li = P (T
-=ti|Li ≤ Ti ≤ Ri))\)</span></li>
+yri),\)</span> sujetos a <span class="math inline">\(yli \leq ti \leq
+yri ; i = 1, 2, ..., n.\)</span> <span class="math inline">\((tip: Li =
+P (T =ti|Li \leq Ti \leq Ri))\)</span></li>
 <li>(Caso censura por intervalo y truncamiento). Considere la un muestra
 de cuatro pacientes cuya edad al momento de su muerte estaba en los
 intervalos <span class="math inline">\((90, 120], (110, 15], (80, 100],
 (70, 75])\)</span> sujeto a que la condición de entrada es de 90 años o
-mas. <span class="math inline">\((tip: Li = P (Li ≤ Ti ≤ Ri|T ≥
+mas. <span class="math inline">\((tip: Li = P (Li \leq Ti \leq Ri|T \geq
 yli))\)</span></li>
 </ol>
 </div>
@@ -484,8 +485,10 @@ yli))\)</span></li>
 <h2>Problema 7</h2>
 <p>Sea <span class="math inline">\(Y_1, Y_2, ..., Y_n\)</span> variables
 aleatorias continuas e independientes de supervivencia y sea Y una nueva
-variable aleatoria de supervivencia, definida <span class="math inline">\(W = min(Y_1, Y_2, ..., Y_n)\)</span> Si <span class="math inline">\(Y_i\)</span> tiene función de supervivencia <span class="math inline">\(SYi(y) =exp(−α_iyβ)\)</span> para <span class="math inline">\(αi &gt; 0, y &gt; 0\)</span>, determine la función
-de riesgo para <span class="math inline">\(n^{1/β}W\)</span>.</p>
+variable aleatoria de supervivencia, definida <span class="math inline">\(W = min(Y_1, Y_2, ..., Y_n)\)</span> Si <span class="math inline">\(Y_i\)</span> tiene función de supervivencia <span class="math inline">\(SYi(y) =exp(-\alpha_i y \beta )\)</span> para
+<span class="math inline">\(\alpha_i &gt; 0, y &gt; 0\)</span>,
+determine la función de riesgo para <span class="math inline">\(n^{1/
+\beta }W\)</span>.</p>
 </div>
 <div id="problema-8" class="section level2">
 <h2>Problema 8</h2>
@@ -500,8 +503,8 @@ diciembre 2010. La Tabla muestra las 60 observaciones realizadas de
 enero 1978 y diciembre 2010, ordenadas de la más pequeña hasta la más
 grande, para la cual todas las observaciones están censuradas en 0.01
 mg/l. Observe que hay muestras con valores observados de 0.01 mg/l, los
-cuales serán tratados diferente de las 16 muestras reportadas como
-&lt;0.01 mg/l.</p>
+cuales serán tratados diferente de las 16 muestras reportadas como &lt;
+0.01 mg/l.</p>
 </div>
 
 

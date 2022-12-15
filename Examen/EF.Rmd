@@ -1,0 +1,202 @@
+---
+title: "Examen"
+author: "Antonio, H. F."
+date: "2022-12-09"
+output: 
+    pdf_document: 
+        toc: true
+---
+
+```{r,message=FALSE,warning=FALSE,echo=FALSE}
+library(KMsurv)
+library(survival)
+library(survminer)
+library(powerSurvEpi)
+library(cmprsk)
+library(tidycmprsk)
+library(ggsurvfit)
+```
+
+
+
+```{r, message=FALSE,warning=FALSE,echo=FALSE}
+tRat <- c(4,5,8,9,10,10,10,10,10,10)
+rCen <- c(1,1,1,1,1,0,0,0,0,0)
+data(burn)
+```
+
+# Problema 1
+
+## Solución 1
+
+Función de supervivencia
+
+```{r}
+fSup <-function(x,k) {
+  exp(-x*(1+x)^(-k))
+}
+```
+
+Función de Riesgo
+
+```{r}
+fHaz <-function(x,k) {
+  (1+x)^(-k-1)*(1+(1-k)*x)
+}
+```
+
+Finalmente la función de verosimilitud
+
+```{r}
+lLik <- function(k, t, c) {
+  eMV <-0
+  for(i in 1:10)
+  eMV <- eMV + c[i]*log(fHaz(t[i],k))+ log(fSup(t[i],k))
+  return(eMV)
+}
+```
+
+Obtenemos el estimador de k
+
+```{r}
+kOpt <- optimize(lLik, c(0,1), maximum=TRUE, t = tRat, c = rCen);
+kOpt
+```
+
+## Solución 2
+
+```{r}
+formula <- Surv(tRat,rCen) ~ 1
+mCox1 <- survival::survfit(formula)
+plot(mCox1, xlab = "Time") 
+title("Article Curve")
+```
+
+## Solución 3
+
+```{r}
+fit <- fSup(1:12,0.85638)
+plot(fit, xlab = "Time", type = "l") 
+title("Article Curve")
+
+```
+
+
+# Problema 2
+
+
+## Solución 1
+
+```{r}
+formula <- Surv(T3,D3) ~ Z1
+survdiff(formula, data = burn)
+```
+
+No se rechaza la hipótesis de que los tratamientos sean diferentes, por lo tanto, no hacen ninguna diferencia.
+
+Gráficas de Kaplan-Meier
+
+```{r}
+formula <- Surv(T3,D3) ~ Z1 
+fit <- survival::survfit(formula, data = burn)
+plot(fit, lty = 2:3, xlab = "Months", col = 2:3) 
+legend(0,0.3, c("0-routine bathing", "1-body cleansing"), lty = 2:3, col = 2:3) 
+title("Kaplan-Meier Curves")
+```
+
+De las anteriores curvas podemos ver aunque no se cruzan las curvas, cuando aumentan los meses las curvas parecen separarse.
+
+## Solución 2
+
+Ajustamos el modelo de Cox
+
+```{r}
+burn$Z1 <- as.factor(burn$Z1)
+burn$Z2 <- as.factor(burn$Z2)
+burn$Z3 <- as.factor(burn$Z3)
+burn$Z5 <- as.factor(burn$Z5)
+burn$Z6 <- as.factor(burn$Z6)
+burn$Z7 <- as.factor(burn$Z7)
+burn$Z8 <- as.factor(burn$Z8)
+burn$Z9 <- as.factor(burn$Z9)
+burn$Z10 <- as.factor(burn$Z10)
+burn$Z11 <- as.factor(burn$Z11)
+formula <- Surv(T3,D3) ~ Z1 + Z2 + Z3 + Z4 + Z5 + Z6 + Z7 + Z8 + Z9 + Z10 + Z11
+mCox1 <- coxph(formula, data = burn)
+mCox1
+```
+
+Se observa del ajuste que la solución de baño ahora es significativo a un $\alpha=0.5$, lo que indica que aumenta el tiempo en que reaparezca una infección.
+
+## Solución 3
+
+```{r}
+formula <- Surv(T3,D3) ~ strata(Z1) + Z2 + Z3 + Z4 + Z5 + Z6 + Z7 + Z8 + Z9 + Z10 + Z11
+mCox2 <- coxph(formula, data = burn)
+mCox2
+```
+
+```{r}
+plot(survfit(mCox2),  ylim=c(0.9,1), lty = 2:3, xlab = "Months", col = 2:3) 
+legend(0,0.92, c("0-routine bathing", "1-body cleansing"), lty = 2:3, col = 2:3) 
+title("Cox regression")
+```
+
+De la gráfica observamos que las líneas base nunca se cruzan, por lo tanto se puede suponer que son riesgos proporcionales. Comprobamos si los riesgos son proporcionales
+
+```{r}
+cox.zph(mCox2)
+```
+
+Se observa que de manera global se puede ajustar un modelo de riesgos proporcionales, aunque se observa que las variables Z9, Z10, Z11, no cumplen este supuesto.
+
+## Solución 4
+
+```{r}
+formula <- Surv(T3,D3) ~ strata(Z1) + Z2 + Z3 + Z4 + Z5 + Z6 + Z7 + Z8 + Z9 + Z10 + Z11
+mCox2 <- coxph(formula, data = burn)
+mCox2
+```
+
+
+
+## Solucion 5
+
+Residuales Martingala contra el tiempo de infección
+
+```{r}
+rCox2 <- residuals(mCox1, type = "martingale")
+plot(burn$T3, rCox2, col = 2, ylab = "Mantingale residuals", xlab = "Time")
+lines(lowess(burn$T3, rCox2), col = 1, lwd=2)
+```
+
+
+Residuales de desviación contra el tiempo de infección
+
+```{r}
+rCox2 <- residuals(mCox1, type = "deviance")
+plot(burn$T3, rCox2, col = 2, ylab = "Deviance residuals", xlab = "Time")
+lines(lowess(burn$T3, rCox2), col = 1, lwd=2)
+```
+
+
+## Solución 6
+
+Se propone un modelo paramétrico y buscamos cuál ajusta mejor.
+
+```{r}
+formula <- Surv(T3,D3) ~ Z1 + Z2 + Z3 + Z4 + Z5 + Z6 + Z7 + Z8 + Z9 + Z10 + Z11
+dist <- c("weibull", "exponential", "gaussian", "logistic", "lognormal", "loglogistic")
+ b <- 0
+ 
+for(i in dist){
+  a <- survreg(formula,data=burn,dist=i)
+  if(a$loglik[1]<b){
+    b <- a$loglik[1]
+    c <- a$dist  
+  }
+}
+c
+```
+
+El mejor modelo de acuerdo con la logverosimilitud es un logistic.

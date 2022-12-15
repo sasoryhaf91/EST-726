@@ -1,0 +1,110 @@
+---
+title: "Tarea 3. Análisis de Fragilidad"
+author: "Antonio, H. F."
+date: "2022-11-08"
+output:
+  pdf_document:
+    latex_engine: xelatex
+---
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(survival)
+library(survminer)
+```
+
+
+## Problema 1. (Regresión Cox, Aditivos, BJ)
+
+Considere los datos del ensayo Prevención de eventos con inhibición de la enzima convertidora de angiotensina (PEACE). El objetivo del estudio fue evaluar si la terapia con inhibidores de la ECA, cuando se agrega a la terapia convencional moderna, reduciría la tasa de infarto de miocardio no fatal infarto, muerte por causas cardiovasculares o revascularización en pacientes de bajo riesgo con enfermedad arterial coronaria estable y función ventricular izquierda normal o ligeramente reducida. Los pacientes fueron aleatorizados desde noviembre de 1996 hasta junio de 2000 y fueron seguidos durante hasta 7 años (mediana, 4,8 años), hasta el 31 de diciembre de 2003. El estudio se realizó después de la aprobación de las juntas de revisión institucional en 187 sitios en los Estados Unidos (incluido Puerto Rico), Canada e Italia. Los pacientes dieron su consentimiento informado por escrito para participar. Una junta independiente de monitoreo de datos y seguridad revisó los datos de seguridad del paciente y resultados provisionales. Un comité de revisión de morbilidad y mortalidad revisó y clasificó todos resultados. Los datos consisten en las siguientes variables.
+
+  * t2death: time to death (months)
+  * death: censoring status (1=death; 0=censored)
+  * tx: 0=standard 1=treatment
+  * age: age(years) at baseline
+  * sysbp: systolic blood pressure at baseline
+  * gender: 1=female; 0=male
+  * hidiabet: history of diabetes (1=yes; 0=no) at baseline
+  * hihypert: history of hypertension (1=yes; 0=no) at baseline
+
+
+**1.** Ajuste el modelo de riesgos proporcionales de Cox.
+
+  a) Obtenga los residuales para verificar si se cumple el supuesto de riegos proporcionales, puntos de influencia y datos atipicos. Verifique si es correcta la función de enlace exponencial. (Recuerde: Cox-snell, martingala, schoefied, devianza).
+  
+**2.** Ajuste el modelo de riesgos aditivos de Aalen y compare con Cox.
+  
+**3** Ajuste el modelo de riesgos aditivos de Lin y compare.
+
+**4** Use el modelo de regresión de Buckley James para estos datos. Examine un gráfico de diagnóstico de
+los residuales vs frente a los valores ajustados violaciones al supuesto de varianza residual constante en
+el modelo.
+
+**5** ¿Qué ventajas y desventajas observa en los modelos empleados?
+
+
+
+### Solución 1
+
+
+```{r}
+data<- read.csv("peacedata.csv")
+summary(data)
+```
+
+Transformación a factores las variables categóricas
+
+```{r}
+data$tx <- as.factor(data$tx)
+data$gender <- as.factor(data$gender)
+data$hidiabet <- as.factor(data$hidiabet)
+data$hihyper <- as.factor(data$hihyper)
+```
+
+Se ajusta el modelo.
+
+```{r}
+formula <- Surv(t2death,death) ~ tx + age + sysbp + gender + hidiabet + hihypert
+mCox <-coxph(formula = formula, data = data)
+summary(mCox)
+```
+
+Se revisa el supuesto de riesgos proporcionales.
+
+```{r}
+pRP <- cox.zph(mCox)
+pRP
+```
+
+Se grafican los residuales de Schoenfeld.
+
+```{r,fig.height=8,fig.width=15}
+ggcoxzph(pRP)
+```
+
+Se grafican los residuales Martingala
+
+```{r}
+mRP = residuals(mCox, type = "martingale")
+plot(data$age, mRP, col = 2)
+lines(lowess(data$age, mRP), col = 3, lwd=2)
+```
+
+Se grafican los puntos de influencia.
+
+```{r}
+formula <- Surv(t2death, death) ~ age 
+mCox1 <- coxph(formula, data = data)
+mRP1 <- residuals(mCox1, type = "martingale")
+
+#ggcoxdiagnostics(mCox1, type = "dfbetas", 
+#                 linear.predictions = FALSE, sline = FALSE, 
+#                 ggtheme = ggplot2::theme_bw())
+
+#plot(data$tx, mRP1, col="gray50")
+
+#lines(lowess(data$tx, mRP1), col = "brown", lwd=2)
+#Puntos de influencia 
+```
+
+
+
